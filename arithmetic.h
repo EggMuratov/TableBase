@@ -1,4 +1,4 @@
-// объявление функций и классов для вычисления арифметических выражений
+// РѕР±СЉСЏРІР»РµРЅРёРµ С„СѓРЅРєС†РёР№ Рё РєР»Р°СЃСЃРѕРІ РґР»СЏ РІС‹С‡РёСЃР»РµРЅРёСЏ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРёС… РІС‹СЂР°Р¶РµРЅРёР№
 #include <iostream>
 #include <map>
 #include <vector>
@@ -7,6 +7,7 @@
 #include <sstream>
 using namespace std;
 
+class Polynom;
 
 
 
@@ -75,7 +76,7 @@ class List
 	Node<DataType>* Tail;
 
 public:
-	List() noexcept : head(nullptr), Tail(nullptr), fictive_head(nullptr) {} // создать пустой список
+	List() noexcept : head(nullptr), Tail(nullptr), fictive_head(nullptr) {} // СЃРѕР·РґР°С‚СЊ РїСѓСЃС‚РѕР№ СЃРїРёСЃРѕРє
 
 	List(const DataType& d) {
 		head = new Node<DataType>(d);
@@ -84,7 +85,7 @@ public:
 		fictive_head->next = head;
 		Tail->data = head->data;
 		head->next = fictive_head;
-	} // создать список из одного звена
+	} // СЃРѕР·РґР°С‚СЊ СЃРїРёСЃРѕРє РёР· РѕРґРЅРѕРіРѕ Р·РІРµРЅР°
 
 	bool isEmpty() {
 		return head == NULL;
@@ -113,20 +114,21 @@ public:
 			head->next = tmp;
 			fictive_head->next = head;
 		}
-	}// вставить элемент d первым
+	}// РІСЃС‚Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚ d РїРµСЂРІС‹Рј
 
 	DataType GetFirst() {
 		if (isEmpty()) {
 			throw "List is empty";
 		}
 		return head->data;
-	} // посмотреть первого
+	} // РїРѕСЃРјРѕС‚СЂРµС‚СЊ РїРµСЂРІРѕРіРѕ
 
-	void InsertToTail(const DataType& d) {
+	void InsertToTail(DataType d) {
 		if (isEmpty()) {
 			head = new Node<DataType>(d);
-			fictive_head = new Node<DataType>;
-			Tail = new Node<DataType>;
+			fictive_head = new Node<DataType>(d);
+			Tail = new Node<DataType>(d);
+			fictive_head->data = DataType();
 			fictive_head->next = head;
 			Tail->data = head->data;
 			head->next = fictive_head;
@@ -152,7 +154,7 @@ public:
 			Tail = tmp1;
 
 			//}
-		} // вставить элемент d последним
+		} // РІСЃС‚Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚ d РїРѕСЃР»РµРґРЅРёРј
 	}
 
 	DataType ViewTail() {
@@ -160,7 +162,7 @@ public:
 			throw "List is empty";
 		}
 		return Tail->data;
-	} // посмотреть последнего
+	} // РїРѕСЃРјРѕС‚СЂРµС‚СЊ РїРѕСЃР»РµРґРЅРµРіРѕ
 
 	void Delete(const DataType& d) {
 		if (isEmpty()) {
@@ -203,7 +205,7 @@ public:
 			while ((tmp->next)->data != d) {
 				tmp = tmp->next;
 			}
-			tmp1 = tmp->next; // нужный elem
+			tmp1 = tmp->next; // РЅСѓР¶РЅС‹Р№ elem
 			tmp->next = tmp1->next;
 			if (tmp1 == head) {
 				head = tmp->next;
@@ -213,7 +215,7 @@ public:
 			}
 			delete tmp1;
 		}
-	} // удалить звено со значением data = d//работает
+	} // СѓРґР°Р»РёС‚СЊ Р·РІРµРЅРѕ СЃРѕ Р·РЅР°С‡РµРЅРёРµРј data = d//СЂР°Р±РѕС‚Р°РµС‚
 
 	listIterator<DataType> begin() {
 		if (isEmpty()) {
@@ -221,17 +223,17 @@ public:
 		}
 		listIterator<DataType> tmp(head);
 		return tmp;
-	} // получить итератор на первое звено 
+	} // РїРѕР»СѓС‡РёС‚СЊ РёС‚РµСЂР°С‚РѕСЂ РЅР° РїРµСЂРІРѕРµ Р·РІРµРЅРѕ 
 
 	listIterator<DataType> end() {
 		listIterator<DataType> tmp(fictive_head);
 		return tmp;
-	} // получить итератор на последнее звено
+	} // РїРѕР»СѓС‡РёС‚СЊ РёС‚РµСЂР°С‚РѕСЂ РЅР° РїРѕСЃР»РµРґРЅРµРµ Р·РІРµРЅРѕ
 
 	listIterator<DataType> end_1() {
 		listIterator<DataType> tmp(nullptr);
 		return tmp;
-	} // получить итератор на конец списка
+	} // РїРѕР»СѓС‡РёС‚СЊ РёС‚РµСЂР°С‚РѕСЂ РЅР° РєРѕРЅРµС† СЃРїРёСЃРєР°
 
 	~List() {
 		fictive_head = nullptr;
@@ -269,7 +271,7 @@ public:
 		fictive_head = nullptr;
 		head = nullptr;
 		Tail = nullptr;
-	}// удалить все звенья  
+	}// СѓРґР°Р»РёС‚СЊ РІСЃРµ Р·РІРµРЅСЊСЏ  
 
 	void InsertAfter(listIterator<DataType> it, const DataType& d) {
 		if (it != nullptr) {
@@ -299,7 +301,7 @@ public:
 		else {
 			throw "Incorrected iterator";
 		}
-	} // вставить элемент d после звена node //готово
+	} // РІСЃС‚Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚ d РїРѕСЃР»Рµ Р·РІРµРЅР° node //РіРѕС‚РѕРІРѕ
 
 	listIterator<DataType> Search(const DataType& d) {
 		Node<DataType>* tmp = head;
@@ -310,7 +312,7 @@ public:
 			tmp = tmp->next;
 		}
 		return listIterator<DataType>(tmp);
-	} // найти указатель на звено со значением data = d //готово
+	} // РЅР°Р№С‚Рё СѓРєР°Р·Р°С‚РµР»СЊ РЅР° Р·РІРµРЅРѕ СЃРѕ Р·РЅР°С‡РµРЅРёРµРј data = d //РіРѕС‚РѕРІРѕ
 
 	void Delete(const listIterator<DataType>& it) {
 		if (it != nullptr) {
@@ -349,7 +351,7 @@ public:
 				while (listIterator<DataType>(tmp->next) != it) {
 					tmp = tmp->next;
 				}
-				tmp1 = tmp->next; // нужный elem
+				tmp1 = tmp->next; // РЅСѓР¶РЅС‹Р№ elem
 				tmp->next = tmp1->next;
 				if (tmp1 == head) {
 					head = tmp->next;
@@ -362,7 +364,7 @@ public:
 		else {
 			throw "Incorrected iterator";
 		}
-	} // удалить звено со значением data = d	
+	} // СѓРґР°Р»РёС‚СЊ Р·РІРµРЅРѕ СЃРѕ Р·РЅР°С‡РµРЅРёРµРј data = d	
 
 	void Delete(const listIterator<DataType>& start, const listIterator<DataType>& finish) {
 		if (start != nullptr || finish != nullptr) {
@@ -418,7 +420,7 @@ public:
 			fictive_head->next = head;
 			Tail->next = fictive_head;
 		}
-	} // инвертировать список, т.е. звенья должны идти в обратном порядке
+	} // РёРЅРІРµСЂС‚РёСЂРѕРІР°С‚СЊ СЃРїРёСЃРѕРє, С‚.Рµ. Р·РІРµРЅСЊСЏ РґРѕР»Р¶РЅС‹ РёРґС‚Рё РІ РѕР±СЂР°С‚РЅРѕРј РїРѕСЂСЏРґРєРµ
 
 	List Merge(const listIterator<DataType>& start, const List& list2) {
 		if (isEmpty() && start == nullptr) {
@@ -441,7 +443,7 @@ public:
 			return l3;
 		}
 		return *this;
-	} // создать список3, добавив список2 в текущий список после итератора 
+	} // СЃРѕР·РґР°С‚СЊ СЃРїРёСЃРѕРє3, РґРѕР±Р°РІРёРІ СЃРїРёСЃРѕРє2 РІ С‚РµРєСѓС‰РёР№ СЃРїРёСЃРѕРє РїРѕСЃР»Рµ РёС‚РµСЂР°С‚РѕСЂР° 
 
 	void MergeWith(const listIterator<DataType>& start, const List& list2) {
 		if (isEmpty() && start == nullptr) {
@@ -459,7 +461,7 @@ public:
 			Tail = list2.Tail;
 			Tail->next = fictive_head;
 		}
-	} // в *this добавить список2 после итератора
+	} // РІ *this РґРѕР±Р°РІРёС‚СЊ СЃРїРёСЃРѕРє2 РїРѕСЃР»Рµ РёС‚РµСЂР°С‚РѕСЂР°
 
 	friend ostream& operator<<(ostream& os, const List<DataType>& l);
 
@@ -474,7 +476,7 @@ public:
 		return false;
 	}
 
-	void MadeUnique() { // готово
+	void MadeUnique() { // РіРѕС‚РѕРІРѕ
 		if (GetSize() == 1) {}
 		else if (!isEmpty()) {
 			vector <Node<DataType>*> elems;
@@ -488,9 +490,9 @@ public:
 				}
 				tmp = tmp->next;
 			}
-			//Node<DataType>* tmp_head = head; // новая голова
+			//Node<DataType>* tmp_head = head; // РЅРѕРІР°СЏ РіРѕР»РѕРІР°
 			//elems.push_back(head);
-			//Node<DataType>* tmp1 = head->next; //ходилка
+			//Node<DataType>* tmp1 = head->next; //С…РѕРґРёР»РєР°
 			//Node<DataType>* tmp2 = new Node<DataType>;
 			//int flag = 1, flag1 = 0;
 			//if (GetSize() == 2) {
@@ -521,7 +523,7 @@ public:
 			//	Tail->data = head->data;
 			//}
 		}
-	} // исключить повторяющиеся звенья
+	} // РёСЃРєР»СЋС‡РёС‚СЊ РїРѕРІС‚РѕСЂСЏСЋС‰РёРµСЃСЏ Р·РІРµРЅСЊСЏ
 	void Delete_Middle() {
 		int k = GetSize();
 		if (k == 2) {
@@ -549,13 +551,13 @@ public:
 			return true;
 		}
 		return false;
-	}   // определить, есть ли цикл в списке
+	}   // РѕРїСЂРµРґРµР»РёС‚СЊ, РµСЃС‚СЊ Р»Рё С†РёРєР» РІ СЃРїРёСЃРєРµ
 
 	void BreakCycle() {
 		if (Cycle()) {
 			Tail->next = fictive_head;
 		}
-	}// "разомкнуть" цикл в списке
+	}// "СЂР°Р·РѕРјРєРЅСѓС‚СЊ" С†РёРєР» РІ СЃРїРёСЃРєРµ
 
 	std::string ToString() {
 		string result = "";
@@ -564,20 +566,21 @@ public:
 			result += std::to_string(tmp->next->data) + "; ";
 			tmp = tmp->next;
 		}
-	} // "зн1; зн2; " 
+	} // "Р·РЅ1; Р·РЅ2; " 
 
 	int GetSize() {
-		int k = 0;
-		Node<DataType>* tmp = new Node<DataType>;
-		tmp->data = fictive_head->data;
-		tmp->next = fictive_head->next;
-		while (tmp->next != fictive_head) {
-			k++;
-			tmp = tmp->next;
+		int size = 0;
+		if (isEmpty()){
+			return size;
 		}
-		return k;
+		Node<DataType>* current = head;
+		while (current != fictive_head){
+			size++;
+			current = current->next;
+		}
+		return size;
 	}
-	// узнать число звеньев в списке
+	// СѓР·РЅР°С‚СЊ С‡РёСЃР»Рѕ Р·РІРµРЅСЊРµРІ РІ СЃРїРёСЃРєРµ
 
 	List Merge(const List& list2) {
 		List<DataType> list_merged;
@@ -594,20 +597,27 @@ public:
 		}
 
 		return list_merged;
-	} // создать список3, добавив в конец текущего списка список2
+	} // СЃРѕР·РґР°С‚СЊ СЃРїРёСЃРѕРє3, РґРѕР±Р°РІРёРІ РІ РєРѕРЅРµС† С‚РµРєСѓС‰РµРіРѕ СЃРїРёСЃРєР° СЃРїРёСЃРѕРє2
 
-	bool operator==(const List& list2) const {
-		Node<DataType>* tmp1 = fictive_head;
-		Node<DataType>* tmp2 = list2.fictive_head;
-		while (tmp1->next != fictive_head && tmp2->next != list2.fictive_head) {
-			if (tmp1->next->data != tmp2->next->data) {
+	bool operator==(const List& list2) const noexcept {
+		Node<DataType>* current1 = head;
+		Node<DataType>* current2 = list2.head;
+
+		while ((current1 != fictive_head) && (current2 != list2.fictive_head))
+		{
+			if (current1->data != current2->data)
+			{
 				return false;
 			}
-			tmp1 = tmp1->next;
-			tmp2 = tmp2->next;
+
+			current1 = current1->next;
+			current2 = current2->next;
+		}
+		if ((current1 != fictive_head) && (current2 != list2.fictive_head)) {
+			return false;
 		}
 		return true;
-	} // списки равны, если элементы в них идут в одинаковом порядке
+	} // СЃРїРёСЃРєРё СЂР°РІРЅС‹, РµСЃР»Рё СЌР»РµРјРµРЅС‚С‹ РІ РЅРёС… РёРґСѓС‚ РІ РѕРґРёРЅР°РєРѕРІРѕРј РїРѕСЂСЏРґРєРµ
 };
 
 
@@ -659,7 +669,7 @@ public:
 	bool Empty();
 	string to_string();
 	Polynom operator*(Polynom& other);
-	// operatot == 
+	bool operator==(const Polynom& p) const noexcept;
 	void DelCoeffZero();
 	~Polynom() = default;
 
@@ -690,26 +700,50 @@ public:
 	Polynom Calculate_Polynom();
 };
 
-
-template <typename TKey, typename TValue>struct TTableRec {
+/*
+template <typename TKey, typename TValue>
+struct TTableRec {
 	TKey key;
 	TValue value;
 
-	TTableRec(TTableRec<TKey, TValue>& rec) : key(rec.key), value(rec.value) {};
-	TTableRec(TKey& k = TKey(), TValue& v = TValue()) : key(k), value(v) {};
+	TTableRec(TTableRec<TKey, TValue> rec) : key(rec.key), value(rec.value) {};
+	TTableRec(TKey k = TKey(), TValue v = TValue()) : key(k), value(v) {};
 };
-
+*/
 template <typename TKey, typename TValue> class TTableList {
-	List<TTableRec<TKey, TValue>> table;
+	List<std::pair<TKey, TValue>> table;
 public:
-	TTableList() {};
-	TTableList(TKey& k, TValue& v) {
-		TTableRec<TKey, TValue> tmp(k, v);
+	TTableList() = default;
+	TTableList(TKey k, TValue v) {
+		std::pair<TKey, TValue> tmp;
+		tmp = std::make_pair(k, v);
 		table.InsertToTail(tmp);
 	}
 	size_t size() const noexcept { return table.GetSize(); }
-	TValue& operator[](listIterator<TTableRec<TKey, TValue>> pos) { return *pos.value; }
-	void Delete_Elem(TTableRec<TKey, TValue> elem) { table.Delete(elem); }
+	TValue& operator[](TKey pos) {
+		listIterator<std::pair<TKey, TValue>> tmp = table.begin();
+		listIterator<std::pair<TKey, TValue>> tmp_1 = table.end();
+		while ((*tmp).first != pos) {
+			if (tmp == tmp_1) {
+				throw "Elem is missing";
+			}
+			tmp++;
+		}
+		return (*tmp).second;
+	}
+	listIterator<std::pair<TKey, TValue>>& Search(std::pair <TKey, TValue> elem) {
+		return table.Search(elem);
+	}
+	void Add(TKey k, TValue v) {
+		std::pair<TKey, TValue> tmp;
+		tmp = std::make_pair(k, v);
+		table.InsertToTail(tmp);
+	}
+	void Delete_Elem(TKey k, TValue v) {
+		std::pair<TKey, TValue> tmp;
+		tmp = std::make_pair(k, v);
+		table.Delete(tmp);
+	}
 };
 /*
 template <typename TKey, typename TValue>
