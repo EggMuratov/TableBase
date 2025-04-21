@@ -1,4 +1,4 @@
-// реализация функций и классов для вычисления арифметических выражений
+// СЂРµР°Р»РёР·Р°С†РёСЏ С„СѓРЅРєС†РёР№ Рё РєР»Р°СЃСЃРѕРІ РґР»СЏ РІС‹С‡РёСЃР»РµРЅРёСЏ Р°СЂРёС„РјРµС‚РёС‡РµСЃРєРёС… РІС‹СЂР°Р¶РµРЅРёР№
 #include "../include/arithmetic.h"
 #include "../include/stack.h"
 #include <iostream>
@@ -282,7 +282,7 @@ double TArithmeticExpression::Get_Operand(string item) {
 	double* a = Get_Elem(item);
 	if (a == nullptr) {
 		double b;
-		cout << "Введите значение " << item << ": ";
+		cout << "Р’РІРµРґРёС‚Рµ Р·РЅР°С‡РµРЅРёРµ " << item << ": ";
 		cin >> b;
 		operands_value.push_back(std::pair <string, double>(item, b));
 		return b;
@@ -624,7 +624,7 @@ Polynom::Polynom(const Polynom& p)
 	List<Monom> second_polinoms = p.polinoms;
 	listIterator<Monom> start = second_polinoms.begin();
 
-	while (start != polinoms.end())
+	while (start != second_polinoms.end())
 	{
 		polinoms.InsertToTail(*start);
 		++start;
@@ -783,6 +783,14 @@ Polynom Polynom::operator*(Polynom& p)
 
 
 	return res;
+}
+
+
+bool Polynom::operator==(const Polynom & p) const noexcept{
+	if (polinoms == p.polinoms) {
+		return true;
+	}
+	return false;
 }
 
 
